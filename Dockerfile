@@ -52,6 +52,10 @@ WORKDIR /FasterLivePortrait
 RUN huggingface-cli download KwaiVGI/LivePortrait \
   --local-dir ./checkpoints \
   --exclude "*.git*" "README.md" "docs"
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip uninstall tensorrt tensorrt-cu12 tensorrt-cu12-bindings tensorrt-cu12-libs
+RUN pip install tensorrt==10.6.0 tensorrt-cu12==10.6.0 tensorrt-cu12-bindings==10.6.0 tensorrt-cu12-libs==10.6.0
 
 COPY scripts/build_grid_sample3d_plugin.sh /build_grid_sample3d_plugin.sh
 COPY scripts/build_fasterliveportrait_trt.sh /build_fasterliveportrait_trt.sh
