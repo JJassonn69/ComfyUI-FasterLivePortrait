@@ -1,6 +1,6 @@
 from faster_live_portrait import FasterLivePortraitPipeline
 from omegaconf import OmegaConf
-from config import LIVE_PORTRAIT_INFER_CFG
+from .config import LIVE_PORTRAIT_INFER_CFG
 
 class FasterLivePortrait:
     @classmethod
