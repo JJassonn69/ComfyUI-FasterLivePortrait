@@ -21,7 +21,6 @@ RUN wget --progress=dot:giga \
  && tar -xzf TensorRT-${TRT_VERSION}.Linux.x86_64-gnu.cuda-${CUDA_VERSION}.tar.gz \
  && rm TensorRT-${TRT_VERSION}.Linux.x86_64-gnu.cuda-${CUDA_VERSION}.tar.gz
 
- # after the TensorRT tar extraction
 RUN echo "${TensorRT_ROOT}/lib" > /etc/ld.so.conf.d/tensorrt.conf \
 && ldconfig
 
@@ -30,6 +29,10 @@ WORKDIR /opt/grid-sample3d-trt-plugin
 
 ENV TensorRT_ROOT=/opt/TensorRT-${TRT_VERSION}
 ENV LD_LIBRARY_PATH=${TensorRT_ROOT}/lib:$LD_LIBRARY_PATH
+
+# Copy build script into container
+COPY build_grid_sample3d_plugin.sh /opt/build_grid_sample3d_plugin.sh
+RUN chmod +x /opt/build_grid_sample3d_plugin.sh
 
 # RUN mkdir -p build && cd build && \
 #     cmake .. \
