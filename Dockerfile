@@ -37,7 +37,7 @@ RUN git clone https://github.com/SeanWangJS/grid-sample3d-trt-plugin.git /grid-s
 RUN git clone https://github.com/varshith15/FasterLivePortrait.git /FasterLivePortrait
 
 WORKDIR /FasterLivePortrait
-RUN huggingface-cli download KwaiVGI/LivePortrait \
+RUN huggingface-cli download warmshao/FasterLivePortrait \
   --local-dir ./checkpoints \
   --exclude "*.git*" "README.md" "docs"
 
@@ -58,9 +58,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY scripts/build_grid_sample3d_plugin.sh /build_grid_sample3d_plugin.sh
 COPY scripts/build_fasterliveportrait_trt.sh /build_fasterliveportrait_trt.sh
+COPY scripts/onnx_to_trt.py /onnx_to_trt.py
 
 RUN chmod +x /build_fasterliveportrait_trt.sh
 RUN chmod +x /build_grid_sample3d_plugin.sh
+RUN chmod +x /onnx_to_trt.py
 
 WORKDIR /workspace
 
