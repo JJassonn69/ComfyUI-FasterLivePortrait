@@ -70,6 +70,6 @@ COPY scripts/build_fasterliveportrait_trt.sh /build_fasterliveportrait_trt.sh
 RUN chmod +x /build_fasterliveportrait_trt.sh
 RUN chmod +x /build_grid_sample3d_plugin.sh
 
-WORKDIR /workspace
+WORKDIR /FasterLivePortrait
 
 CMD ["/bin/bash"]
