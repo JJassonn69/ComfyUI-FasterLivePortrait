@@ -3,76 +3,76 @@ models:
   warping_spade:
     name: "WarpingSpadeModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/warping_spade-fix.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/warping_spade-fix.trt"
   motion_extractor:
     name: "MotionExtractorModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/motion_extractor.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/motion_extractor.trt"
   landmark:
     name: "LandmarkModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/landmark.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/landmark.trt"
   face_analysis:
     name: "FaceAnalysisModel"
     predict_type: "trt"
     model_path:
-      - "/workspace/ComfyUI/checkpoints/liveportrait_onnx/retinaface_det_static.trt"
-      - "/workspace/ComfyUI/checkpoints/liveportrait_onnx/face_2dpose_106_static.trt"
+      - "/FasterLivePortrait/checkpoints/liveportrait_onnx/retinaface_det_static.trt"
+      - "/FasterLivePortrait/checkpoints/liveportrait_onnx/face_2dpose_106_static.trt"
   app_feat_extractor:
     name: "AppearanceFeatureExtractorModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/appearance_feature_extractor.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/appearance_feature_extractor.trt"
   stitching:
     name: "StitchingModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/stitching.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/stitching.trt"
   stitching_eye_retarget:
     name: "StitchingModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/stitching_eye.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/stitching_eye.trt"
   stitching_lip_retarget:
     name: "StitchingModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/stitching_lip.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/stitching_lip.trt"
 animal_models:
   warping_spade:
     name: "WarpingSpadeModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_animal_onnx/warping_spade-fix-v1.1.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_animal_onnx/warping_spade-fix-v1.1.trt"
   motion_extractor:
     name: "MotionExtractorModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_animal_onnx/motion_extractor-v1.1.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_animal_onnx/motion_extractor-v1.1.trt"
   app_feat_extractor:
     name: "AppearanceFeatureExtractorModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_animal_onnx/appearance_feature_extractor-v1.1.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_animal_onnx/appearance_feature_extractor-v1.1.trt"
   stitching:
     name: "StitchingModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_animal_onnx/stitching-v1.1.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_animal_onnx/stitching-v1.1.trt"
   stitching_eye_retarget:
     name: "StitchingModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_animal_onnx/stitching_eye-v1.1.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_animal_onnx/stitching_eye-v1.1.trt"
   stitching_lip_retarget:
     name: "StitchingModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_animal_onnx/stitching_lip-v1.1.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_animal_onnx/stitching_lip-v1.1.trt"
   landmark:
     name: "LandmarkModel"
     predict_type: "trt"
-    model_path: "/workspace/ComfyUI/checkpoints/liveportrait_onnx/landmark.trt"
+    model_path: "/FasterLivePortrait/checkpoints/liveportrait_onnx/landmark.trt"
   face_analysis:
     name: "FaceAnalysisModel"
     predict_type: "trt"
     model_path:
-      - "/workspace/ComfyUI/checkpoints/liveportrait_onnx/retinaface_det_static.trt"
-      - "/workspace/ComfyUI/checkpoints/liveportrait_onnx/face_2dpose_106_static.trt"
+      - "/FasterLivePortrait/checkpoints/liveportrait_onnx/retinaface_det_static.trt"
+      - "/FasterLivePortrait/checkpoints/liveportrait_onnx/face_2dpose_106_static.trt"
 joyvasa_models:
-  motion_model_path: "checkpoints/JoyVASA/motion_generator/motion_generator_hubert_chinese.pt"
-  audio_model_path: "checkpoints/chinese-hubert-base"
-  motion_template_path: "checkpoints/JoyVASA/motion_template/motion_template.pkl"
+  motion_model_path: "/FasterLivePortrait/checkpoints/JoyVASA/motion_generator/motion_generator_hubert_chinese.pt"
+  audio_model_path: "/FasterLivePortrait/checkpoints/chinese-hubert-base"
+  motion_template_path: "/FasterLivePortrait/checkpoints/JoyVASA/motion_template/motion_template.pkl"
 crop_params:
   src_dsize: 512
   src_scale: 2.3
@@ -98,7 +98,7 @@ infer_params:
   source_video_eye_retargeting_threshold: 0.18 # threshold for eyes retargeting if the input is a source video
   driving_smooth_observation_variance: 1e-7 # smooth strength scalar for the animated video when the input is a source video, the larger the number, the smoother the animated video; too much smoothness would result in loss of motion accuracy
   anchor_frame: 0 # TO IMPLEMENT
-  mask_crop_path: "/workspace/ComfyUI/assets/mask_template.png"
+  mask_crop_path: "/workspace/ComfyUI/input/mask_template.png"
   driving_multiplier: 1.0
   animation_region: "lip"
   cfg_mode: "incremental"

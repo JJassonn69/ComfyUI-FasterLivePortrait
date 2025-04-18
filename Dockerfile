@@ -37,9 +37,17 @@ RUN git clone https://github.com/SeanWangJS/grid-sample3d-trt-plugin.git /grid-s
 RUN git clone --branch vbrealtime_upgrade https://github.com/varshith15/FasterLivePortrait.git /FasterLivePortrait
 
 WORKDIR /FasterLivePortrait
+
+# Download JoyVASA models
+RUN git clone https://huggingface.co/jdh-algo/JoyVASA ./checkpoints/
+
+# Download LivePortrait models
 RUN huggingface-cli download KwaiVGI/LivePortrait \
   --local-dir ./checkpoints \
   --exclude "*.git*" "README.md" "docs"
+
+# Download FasterLivePortrait models
+RUN huggingface-cli download warmshao/FasterLivePortrait --local-dir ./checkpoints
 
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
