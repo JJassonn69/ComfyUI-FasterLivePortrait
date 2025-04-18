@@ -34,3 +34,4 @@ sed -i '37c\
 ' /FasterLivePortrait/scripts/onnx2trt.py
 chmod +x /FasterLivePortrait/scripts/all_onnx2trt.sh
 /FasterLivePortrait/scripts/all_onnx2trt.sh
+mv /FasterLivePortrait/checkpoints "$TRT_DIR"

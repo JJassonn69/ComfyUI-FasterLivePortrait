@@ -5,6 +5,5 @@ __pycache__
 *.egg-info
 *.bak
 config.py
-models_in
-models_out
+models
 build

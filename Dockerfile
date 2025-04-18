@@ -9,9 +9,14 @@ ENV TensorRT_ROOT=/opt/TensorRT-${TRT_VERSION}
 RUN apt-get update && apt-get install -y --no-install-recommends \
         python3.10 \
         python3.10-venv \
+        python3.10-dev \
+        libpython3.10-dev \
         python3.10-distutils \
         python3-pip \
-        wget ca-certificates git cmake build-essential \
+        libblas-dev \
+        liblapack-dev \
+        libopenblas-dev \
+        wget ca-certificates git cmake build-essential swig \
         libprotobuf-dev protobuf-compiler \
     && rm -rf /var/lib/apt/lists/*
 
@@ -41,18 +46,6 @@ RUN huggingface-cli download warmshao/FasterLivePortrait \
   --local-dir ./checkpoints \
   --exclude "*.git*" "README.md" "docs"
 
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends \
-    build-essential \
-    cmake \
-    swig \
-    python3-dev \
-    libpython3-dev \
-    libblas-dev \
-    liblapack-dev \
-    libopenblas-dev \
-  && rm -rf /var/lib/apt/lists/*
-
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -64,6 +57,6 @@ RUN chmod +x /build_fasterliveportrait_trt.sh
 RUN chmod +x /build_grid_sample3d_plugin.sh
 RUN chmod +x /onnx_to_trt.py
 
-WORKDIR /workspace
+WORKDIR /FasterLivePortrait
 
 CMD ["/bin/bash"]
