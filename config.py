@@ -1,5 +1,5 @@
 LIVE_PORTRAIT_INFER_CFG = """{
-   "grid_sample_plugin_path":"/home/pedro/workspace/comfyRealtime/grid-sample3d-trt-plugin/build/libgrid_sample_3d_plugin.so",
+   "grid_sample_plugin_path":"/home/pedro/workspace/comfyRealtime/ComfyUI/custom_nodes/ComfyUI-FasterLivePortrait/models/libgrid_sample_3d_plugin.so",
    "models":{
       "warping_spade":{
          "name":"WarpingSpadeModel",
@@ -120,7 +120,7 @@ LIVE_PORTRAIT_INFER_CFG = """{
       "source_video_eye_retargeting_threshold":0.18,
       "driving_smooth_observation_variance":1e-07,
       "anchor_frame":0,
-      "mask_crop_path":"./assets/mask_template.png",
+      "mask_crop_path":"/home/pedro/workspace/comfyRealtime/FasterLivePortrait/assets/mask_template.png",
       "driving_multiplier":1.0,
       "animation_region":"lip",
       "cfg_mode":"incremental",
