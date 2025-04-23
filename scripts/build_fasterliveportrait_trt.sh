@@ -14,15 +14,15 @@ echo "Building grid-sample3d TRT plugin..."
 # By default the container’s linker searches in /usr/lib/x86_64-linux-gnu (and any dirs in /etc/ld.so.conf.d/).
 # Dropping the .so.10.6.0 files there makes them discoverable by dlopen().
 # Copy all of the core TensorRT runtime libraries:
-cp /opt/TensorRT-10.6.0.26/lib/libnvinfer* \
+cp /opt/TensorRT-10.9.0.34/lib/libnvinfer* \
          /usr/lib/x86_64-linux-gnu/
 
 # Copy helper libs like the ONNX parser:
-cp /opt/TensorRT-10.6.0.26/lib/libnvonnxparser* \
+cp /opt/TensorRT-10.9.0.34/lib/libnvonnxparser* \
          /usr/lib/x86_64-linux-gnu/
 
-# Ensures #include <NvInfer.h> (and others) resolve without needing -I/opt/TensorRT-10.6.0.26/include.
-cp /opt/TensorRT-10.6.0.26/include/NvInfer* \
+# Ensures #include <NvInfer.h> (and others) resolve without needing -I/opt/TensorRT-10.9.0.34/include.
+cp /opt/TensorRT-10.9.0.34/include/NvInfer* \
          /usr/include/
 
 ln -s "$(which python3)" /usr/local/bin/python
@@ -34,5 +34,5 @@ sed -i '37c\
 ' /FasterLivePortrait/scripts/onnx2trt.py
 chmod +x /FasterLivePortrait/scripts/all_onnx2trt.sh
 /FasterLivePortrait/scripts/all_onnx2trt.sh
-mv /FasterLivePortrait/checkpoints "$TRT_DIR"
+mv /FasterLivePortrait/checkpoints/*.trt "$TRT_DIR"
 mv /grid-sample3d-trt-plugin/build/libgrid_sample_3d_plugin.so "$TRT_DIR"
