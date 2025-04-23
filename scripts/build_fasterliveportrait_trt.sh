@@ -34,5 +34,5 @@ sed -i '37c\
 ' /FasterLivePortrait/scripts/onnx2trt.py
 chmod +x /FasterLivePortrait/scripts/all_onnx2trt.sh
 /FasterLivePortrait/scripts/all_onnx2trt.sh
-mv /FasterLivePortrait/checkpoints/*.trt "$TRT_DIR"
+mv /FasterLivePortrait/checkpoints/ "$TRT_DIR"
 mv /grid-sample3d-trt-plugin/build/libgrid_sample_3d_plugin.so "$TRT_DIR"
