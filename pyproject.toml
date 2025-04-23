@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=64.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "FasterLivePortrait-Realtime"
+description = "Improve mouth tracking with live AI Video"
+version = "0.0.1"
+license = { file = "LICENSE" }
+dependencies = [
+    "faster-live-portrait @ git+https://github.com/varshith15/FasterLivePortrait@909babd59b7c6db1c080389b9d96d8d4bcabff7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[project.urls]
+repository = "https://github.com/pschroedl/ComfyUI-FasterLivePortrait"
+
+[tool.comfy]
+PublisherId = "comfyui-faster-live-portrait"
+DisplayName = "ComfyUI Faster Live Portrait"
+Icon = "https://raw.githubusercontent.com/livepeer/comfystream-docs/main/logo/icon-light-120px.svg" # SVG, PNG, JPG or GIF (MAX. 800x400px)
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]} 
