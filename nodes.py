@@ -28,7 +28,10 @@ class FasterLivePortrait:
         source_np = tensor_to_cv2(source)
         target_np = tensor_to_cv2(target)
         processed_image = self.pipeline.animate_image(source_np, target_np)
-        tensor = torch.from_numpy(processed_image.astype(np.float32) / 255.0)
+        if processed_image is None:
+            tensor = torch.from_numpy(source_np.astype(np.float32) / 255.0)
+        else:
+            tensor = torch.from_numpy(processed_image.astype(np.float32) / 255.0)
         tensor = tensor.unsqueeze(0)
         return (tensor,)
     
