@@ -1,6 +1,6 @@
 from faster_live_portrait import FasterLivePortraitPipeline
 from omegaconf import OmegaConf
-from .config import LIVE_PORTRAIT_INFER_CFG
+from .config import get_live_portrait_config
 import numpy as np
 import torch
 
@@ -21,7 +21,8 @@ class FasterLivePortrait:
     FUNCTION = "process_image"
     CATEGORY = "FasterLivePortrait"
     def __init__(self):
-        self.pipeline = FasterLivePortraitPipeline(cfg=OmegaConf.create(LIVE_PORTRAIT_INFER_CFG), is_animal=False)
+        config_dict = get_live_portrait_config()
+        self.pipeline = FasterLivePortraitPipeline(cfg=OmegaConf.create(config_dict), is_animal=False)
 
     def process_image(self, source, target):
         source_np = tensor_to_cv2(source)
