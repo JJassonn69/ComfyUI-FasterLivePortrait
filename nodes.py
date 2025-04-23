@@ -30,7 +30,6 @@ class FasterLivePortrait:
         processed_image = self.pipeline.animate_image(source_np, target_np)
         tensor = torch.from_numpy(processed_image.astype(np.float32) / 255.0)
         tensor = tensor.unsqueeze(0)
-        print(f"Final tensor shape: {tensor.shape}, dtype: {tensor.dtype}, min: {tensor.min().item():.4f}, max: {tensor.max().item():.4f}")
         return (tensor,)
     
 def tensor_to_cv2(tensor):
@@ -46,9 +45,6 @@ def tensor_to_cv2(tensor):
     # Convert from float [0,1] to uint8 [0,255] if needed
     if arr.dtype in [np.float32, np.float64]:
         arr = (arr * 255).clip(0, 255).astype(np.uint8)
-    
-    print(f"Input Image shape: {arr.shape}, dtype: {arr.dtype}, min: {arr.min()}, max: {arr.max()}")
-
     return arr
 
 NODE_CLASS_MAPPINGS = {
