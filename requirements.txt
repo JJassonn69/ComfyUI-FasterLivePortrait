@@ -1,1 +1,1 @@
-faster-live-portrait @ git+https://github.com/varshith15/FasterLivePortrait@909babd59b7c6db1c080389b9d96d8d4bcabff7
+faster-live-portrait @ git+https://github.com/varshith15/FasterLivePortrait@6c0c1bdb1598d3ad5adc1a1a487a6c130c3f3754
