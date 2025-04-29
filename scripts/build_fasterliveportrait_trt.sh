@@ -11,42 +11,28 @@ INPUT_DIR="$1"
 ONNX_DIR="$2"
 TRT_OUTPUT_DIR="$3"
 
-# Set TensorRT paths
 export TensorRT_ROOT=/opt/TensorRT-10.9.0.34/targets/x86_64-linux-gnu
 export LD_LIBRARY_PATH=$TensorRT_ROOT/lib:$LD_LIBRARY_PATH
 
-# Setup directories
 PLUGIN_DIR="$INPUT_DIR/grid-sample3d-trt-plugin"
 FLP_DIR="$INPUT_DIR/FasterLivePortrait"
 
 echo "🔵 Cloning required repositories..."
-git clone https://github.com/SeanWangJS/grid-sample3d-trt-plugin.git "$PLUGIN_DIR"
-git clone https://github.com/varshith15/FasterLivePortrait.git "$FLP_DIR"
+if [ ! -d "$PLUGIN_DIR/.git" ]; then
+    git clone https://github.com/SeanWangJS/grid-sample3d-trt-plugin.git "$PLUGIN_DIR"
+else
+    echo "✅ $PLUGIN_DIR already exists, skipping clone."
+fi
+
+if [ ! -d "$FLP_DIR/.git" ]; then
+    git clone https://github.com/varshith15/FasterLivePortrait.git "$FLP_DIR"
+else
+    echo "✅ $FLP_DIR already exists, skipping clone."
+fi
 
 # Build grid-sample3d plugin
-echo "🔵 Building grid-sample3d TensorRT plugin..."
-rm -rf "$PLUGIN_DIR/build" && mkdir -p "$PLUGIN_DIR/build"
-cd "$PLUGIN_DIR/build"
-
-cmake .. \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DTensorRT_ROOT="$TensorRT_ROOT" \
-  -DCMAKE_PREFIX_PATH="$TensorRT_ROOT" \
-  -DCMAKE_LIBRARY_PATH="$TensorRT_ROOT/lib" \
-  -DCMAKE_CXX_FLAGS="-I$TensorRT_ROOT/include" \
-  -DCMAKE_CUDA_FLAGS="-I$TensorRT_ROOT/include" \
-  -DCMAKE_SHARED_LINKER_FLAGS="-L$TensorRT_ROOT/lib"
-
-make -j"$(nproc)"
-
-echo "✅ Grid-sample3d plugin built:"
-ls -lh libgrid_sample_3d_plugin.so
-
-# Copy TensorRT libraries to standard system locations
-echo "🔵 Copying TensorRT libraries to system paths..."
-cp /opt/TensorRT-10.9.0.34/lib/libnvinfer* /usr/lib/x86_64-linux-gnu/
-cp /opt/TensorRT-10.9.0.34/lib/libnvonnxparser* /usr/lib/x86_64-linux-gnu/
-cp /opt/TensorRT-10.9.0.34/include/NvInfer* /usr/include/
+echo "🔵 Building grid-sample3d plugin..."
+/workspace/ComfyUI/custom_nodes/ComfyUI-FasterLivePortrait/scripts/build_grid_sample3d_plugin.sh "$PLUGIN_DIR"
 
 # Ensure python symlink (for Docker environments missing it)
 ln -sf "$(which python3)" /usr/local/bin/python
@@ -56,21 +42,30 @@ echo "🔵 Preparing FasterLivePortrait..."
 cd "$FLP_DIR"
 git checkout vbrealtime_upgrade
 
-# Patch paths in all_onnx2trt.sh and onnx2trt.py
-sed -i "s|python scripts/onnx2trt.py|python $FLP_DIR/scripts/onnx2trt.py|g" "$FLP_DIR/scripts/all_onnx2trt.sh"
-sed -i "37c\
-        ctypes.CDLL(\"$PLUGIN_DIR/build/libgrid_sample_3d_plugin.so\", mode=ctypes.RTLD_GLOBAL)
-" "$FLP_DIR/scripts/onnx2trt.py"
+# Patch libgrid_sample_3d_plugin.so path
+sed -i "/if platform.system().lower() == 'linux':/{n;s|.*|        ctypes.CDLL(\"$PLUGIN_DIR/build/libgrid_sample_3d_plugin.so\", mode=ctypes.RTLD_GLOBAL)|}" "$FLP_DIR/scripts/onnx2trt.py"
 
-# Update all_onnx2trt.sh to use your ONNX directory
-sed -i "s|./checkpoints/liveportrait_onnx|$ONNX_DIR|g" "$FLP_DIR/scripts/all_onnx2trt.sh"
-
-# Make the script executable
-chmod +x "$FLP_DIR/scripts/all_onnx2trt.sh"
-
-# Run ONNX to TRT conversion
+# Convert ONNX models to TensorRT
 echo "🔵 Running ONNX -> TensorRT conversion..."
-"$FLP_DIR/scripts/all_onnx2trt.sh"
+PYTHON="$FLP_DIR/scripts/onnx2trt.py"
+
+for MODEL in \
+    warping_spade-fix.onnx \
+    landmark.onnx \
+    motion_extractor.onnx \
+    retinaface_det_static.onnx \
+    face_2dpose_106_static.onnx \
+    appearance_feature_extractor.onnx \
+    stitching.onnx \
+    stitching_eye.onnx \
+    stitching_lip.onnx
+do
+    if [[ "$MODEL" == "motion_extractor.onnx" ]]; then
+        python "$PYTHON" -o "$ONNX_DIR/$MODEL" -p fp32
+    else
+        python "$PYTHON" -o "$ONNX_DIR/$MODEL"
+    fi
+done
 
 # Move output files
 echo "🔵 Moving outputs to $TRT_OUTPUT_DIR..."
