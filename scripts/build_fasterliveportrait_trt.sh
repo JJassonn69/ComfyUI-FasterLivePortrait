@@ -67,10 +67,7 @@ do
     fi
 done
 
-# Move output files
-echo "🔵 Moving outputs to $TRT_OUTPUT_DIR..."
-mkdir -p "$TRT_OUTPUT_DIR"
-mv "$FLP_DIR/checkpoints/" "$TRT_OUTPUT_DIR"
+# Also move the compiled plugin .so
 mv "$PLUGIN_DIR/build/libgrid_sample_3d_plugin.so" "$TRT_OUTPUT_DIR"
 
 echo "🎉 All done!"
