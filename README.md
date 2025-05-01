@@ -32,8 +32,6 @@ docker run --rm --gpus all \
   -v "$(pwd)/models":/workspace/ComfyUI/models \
   trt-builder \
   bash /workspace/ComfyUI/custom_nodes/ComfyUI-FasterLivePortrait/scripts/build_fasterliveportrait_trt.sh \
-    /workspace/ComfyUI/custom_nodes/ComfyUI-FasterLivePortrait/assets \
-    /workspace/ComfyUI/models/liveportrait_onnx \
     /workspace/ComfyUI/models/liveportrait_onnx
 ```
 

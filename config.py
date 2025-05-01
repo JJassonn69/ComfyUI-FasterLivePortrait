@@ -4,53 +4,52 @@ import folder_paths
 def get_live_portrait_config():
     models_dir = folder_paths.models_dir
     ComfyUI_FasterLivePortrait_dir = os.path.abspath(os.path.join(models_dir, "../custom_nodes/ComfyUI-FasterLivePortrait"))
-    checkpoints_dir = os.path.join(models_dir, "checkpoints")
 
     config_dict = {
-        "grid_sample_plugin_path": os.path.join(models_dir, "liveportrait_onnx/libgrid_sample_3d_plugin.so"),
+        "grid_sample_plugin_path": os.path.join(models_dir, "liveportrait/libgrid_sample_3d_plugin.so"),
         "models": {
             "warping_spade": {
                 "name": "WarpingSpadeModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/warping_spade-fix.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/warping_spade-fix.trt")
             },
             "motion_extractor": {
                 "name": "MotionExtractorModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/motion_extractor.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/motion_extractor.trt")
             },
             "landmark": {
                 "name": "LandmarkModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/landmark.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/landmark.trt")
             },
             "face_analysis": {
                 "name": "FaceAnalysisModel",
                 "predict_type": "trt",
                 "model_path": [
-                    os.path.join(models_dir, "liveportrait_onnx/retinaface_det_static.trt"),
-                    os.path.join(models_dir, "liveportrait_onnx/face_2dpose_106_static.trt")
+                    os.path.join(models_dir, "liveportrait/retinaface_det_static.trt"),
+                    os.path.join(models_dir, "liveportrait/face_2dpose_106_static.trt")
                 ]
             },
             "app_feat_extractor": {
                 "name": "AppearanceFeatureExtractorModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/appearance_feature_extractor.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/appearance_feature_extractor.trt")
             },
             "stitching": {
                 "name": "StitchingModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/stitching.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/stitching.trt")
             },
             "stitching_eye_retarget": {
                 "name": "StitchingModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/stitching_eye.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/stitching_eye.trt")
             },
             "stitching_lip_retarget": {
                 "name": "StitchingModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/stitching_lip.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/stitching_lip.trt")
             }
         },
         "animal_models": {
@@ -87,21 +86,21 @@ def get_live_portrait_config():
             "landmark": {
                 "name": "LandmarkModel",
                 "predict_type": "trt",
-                "model_path": os.path.join(models_dir, "liveportrait_onnx/landmark.trt")
+                "model_path": os.path.join(models_dir, "liveportrait/landmark.trt")
             },
             "face_analysis": {
                 "name": "FaceAnalysisModel",
                 "predict_type": "trt",
                 "model_path": [
-                    os.path.join(models_dir, "liveportrait_onnx/retinaface_det_static.trt"),
-                    os.path.join(models_dir, "liveportrait_onnx/face_2dpose_106_static.trt")
+                    os.path.join(models_dir, "liveportrait/retinaface_det_static.trt"),
+                    os.path.join(models_dir, "liveportrait/face_2dpose_106_static.trt")
                 ]
             }
         },
         "joyvasa_models": {
-            "motion_model_path": os.path.join(checkpoints_dir, "JoyVASA/motion_generator/motion_generator_hubert_chinese.pt"),
-            "audio_model_path": os.path.join(checkpoints_dir, "chinese-hubert-base"),
-            "motion_template_path": os.path.join(checkpoints_dir, "JoyVASA/motion_template/motion_template.pkl")
+            "motion_model_path": os.path.join(models_dir, "liveportrait/joyvasa_models/motion_generator/motion_generator_hubert_chinese.pt"),
+            "audio_model_path": os.path.join(models_dir, "liveportrait/joyvasa_models/chinese-hubert-base"),
+            "motion_template_path": os.path.join(models_dir, "liveportrait/joyvasa_models/motion_template/motion_template.pkl")
         },
         "crop_params": {
             "src_dsize": 512,

@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 set -e
 
-# Usage: ./build_fasterliveportrait_trt.sh <input_dir> <onnx_dir> <trt_output_dir>
-if [ "$#" -ne 3 ]; then
-  echo "Usage: $0 <input_dir> <onnx_models_dir> <trt_output_dir>"
+# Usage: ./build_fasterliveportrait_trt.sh <flp_models_dir>
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <flp_models_dir>"
   exit 1
 fi
 
-INPUT_DIR="$1"
-ONNX_DIR="$2"
-TRT_OUTPUT_DIR="$3"
+FLP_MODELS_DIR="$1"
 
 export TensorRT_ROOT=/opt/TensorRT-10.9.0.34/targets/x86_64-linux-gnu
 export LD_LIBRARY_PATH=$TensorRT_ROOT/lib:$LD_LIBRARY_PATH
 
-PLUGIN_DIR="$INPUT_DIR/grid-sample3d-trt-plugin"
-FLP_DIR="$INPUT_DIR/FasterLivePortrait"
+PLUGIN_DIR="$FLP_MODELS_DIR/grid-sample3d-trt-plugin"
+FLP_DIR="$FLP_MODELS_DIR/FasterLivePortrait"
 
 echo "🔵 Cloning required repositories..."
 if [ ! -d "$PLUGIN_DIR/.git" ]; then
@@ -61,13 +59,13 @@ for MODEL in \
     stitching_lip.onnx
 do
     if [[ "$MODEL" == "motion_extractor.onnx" ]]; then
-        python "$PYTHON" -o "$ONNX_DIR/$MODEL" -p fp32
+        python "$PYTHON" -o "$FLP_MODELS_DIR/$MODEL" -p fp32
     else
-        python "$PYTHON" -o "$ONNX_DIR/$MODEL"
+        python "$PYTHON" -o "$FLP_MODELS_DIR/$MODEL"
     fi
 done
 
 # Also move the compiled plugin .so
-mv "$PLUGIN_DIR/build/libgrid_sample_3d_plugin.so" "$TRT_OUTPUT_DIR"
+mv "$PLUGIN_DIR/build/libgrid_sample_3d_plugin.so" "$FLP_MODELS_DIR"
 
 echo "🎉 All done!"
