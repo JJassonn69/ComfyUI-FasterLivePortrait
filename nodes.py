@@ -3,6 +3,7 @@ from omegaconf import OmegaConf
 from .config import get_live_portrait_config
 import numpy as np
 import torch
+import cv2
 
 class FasterLivePortrait:
     @classmethod
@@ -42,8 +43,10 @@ def tensor_to_cv2(tensor):
         arr = arr[0]  # now (C, H, W)
 
     # If shape is (C, H, W), convert to (H, W, C)
-    if arr.ndim == 3 and arr.shape[0] in [1, 3]:
-        arr = np.transpose(arr, (1, 2, 0))
+    # if arr.ndim == 3 and arr.shape[0] in [1, 3]:
+    #     arr = np.transpose(arr, (1, 2, 0))
+
+    arr = cv2.resize(arr, (512, 512), interpolation=cv2.INTER_LINEAR)
     
     # Convert from float [0,1] to uint8 [0,255] if needed
     if arr.dtype in [np.float32, np.float64]:
