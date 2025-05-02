@@ -25,7 +25,7 @@ else
 fi
 
 if [ ! -d "$FLP_DIR/.git" ]; then
-    git clone https://github.com/varshith15/FasterLivePortrait.git "$FLP_DIR"
+    git clone --branch vbrealtime_upgrade https://github.com/varshith15/FasterLivePortrait.git "$FLP_DIR"
 else
     echo "✅ $FLP_DIR already exists, skipping clone."
 fi
