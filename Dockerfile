@@ -36,7 +36,7 @@ RUN pip3 install --no-cache-dir \
       ${TensorRT_ROOT}/python/tensorrt-10.9.0.34-cp310-none-linux_x86_64.whl
 
 RUN git clone https://github.com/SeanWangJS/grid-sample3d-trt-plugin.git /grid-sample3d-trt-plugin
-RUN git clone https://github.com/varshith15/FasterLivePortrait.git /FasterLivePortrait
+RUN git clone --branch vbrealtime_upgrade https://github.com/varshith15/FasterLivePortrait.git /FasterLivePortrait
 
 WORKDIR /FasterLivePortrait
 RUN huggingface-cli download warmshao/FasterLivePortrait \

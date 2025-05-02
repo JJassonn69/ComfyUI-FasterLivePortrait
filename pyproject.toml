@@ -8,7 +8,7 @@ description = "Improve mouth tracking with live AI Video"
 version = "0.0.1"
 license = { file = "LICENSE" }
 dependencies = [
-    "faster-live-portrait @ git+https://github.com/varshith15/FasterLivePortrait@7614dbe20ebc2a6586d83e7352a82031e3ecca7a",
+    "faster-live-portrait @ git+https://github.com/varshith15/FasterLivePortrait@5e545c4b112ac6f0011f8a9fe11bb67f7481a5a5",
 ]
 
 [project.optional-dependencies]
