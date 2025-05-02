@@ -99,9 +99,9 @@ def get_live_portrait_config():
             }
         },
         "joyvasa_models": {
-            "motion_model_path": os.path.join(checkpoints_dir, "JoyVASA/motion_generator/motion_generator_hubert_chinese.pt"),
-            "audio_model_path": os.path.join(checkpoints_dir, "chinese-hubert-base"),
-            "motion_template_path": os.path.join(checkpoints_dir, "JoyVASA/motion_template/motion_template.pkl")
+            "motion_model_path": os.path.join(models_dir, "liveportrait_onnx/joyvasa_models/motion_generator_hubert_chinese.pt"),
+            "audio_model_path": os.path.join(models_dir, "liveportrait_onnx/joyvasa_models/chinese-hubert-base"),
+            "motion_template_path": os.path.join(models_dir, "liveportrait_onnx/joyvasa_models/motion_template.pkl")
         },
         "crop_params": {
             "src_dsize": 512,
