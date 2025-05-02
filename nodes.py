@@ -32,6 +32,7 @@ class FasterLivePortrait:
         if processed_image is None:
             tensor = torch.from_numpy(source_np.astype(np.float32) / 255.0)
         else:
+            processed_image = cv2.cvtColor(processed_image, cv2.COLOR_RGB2BGR)
             tensor = torch.from_numpy(processed_image.astype(np.float32) / 255.0)
         tensor = tensor.unsqueeze(0)
         return (tensor,)
