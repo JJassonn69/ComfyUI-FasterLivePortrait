@@ -14,6 +14,22 @@ class FasterLivePortrait:
                 "target": ("IMAGE",),
             },
             "optional": {
+                "flag_normalize_lip": ("BOOLEAN", {"default": False}),
+                "flag_source_video_eye_retargeting": ("BOOLEAN", {"default": False}),
+                "flag_video_editing_head_rotation": ("BOOLEAN", {"default": False}),
+                "flag_eye_retargeting": ("BOOLEAN", {"default": False}),
+                "flag_lip_retargeting": ("BOOLEAN", {"default": False}),
+                "flag_stitching": ("BOOLEAN", {"default": True}),
+                "flag_pasteback": ("BOOLEAN", {"default": True}),
+                "flag_do_crop": ("BOOLEAN", {"default": True}),
+                "flag_do_rot": ("BOOLEAN", {"default": True}),
+                "lip_normalize_threshold": ("FLOAT", {"default": 0.1, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "driving_multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.1}),
+                "animation_region": (["lip", "full"], {"default": "lip"}), # currently only works for lip
+                "cfg_mode": (["incremental", "reference"], {"default": "incremental"}),
+                "cfg_scale": ("FLOAT", {"default": 1.2, "min": 0.0, "max": 10.0, "step": 0.1}),
+                "source_max_dim": ("INT", {"default": 1280, "min": 64, "step": 8}),
+                "source_division": ("INT", {"default": 2, "min": 1, "max": 8, "step": 1})
             },
         }
 
@@ -25,7 +41,8 @@ class FasterLivePortrait:
         config_dict = get_live_portrait_config()
         self.pipeline = FasterLivePortraitPipeline(cfg=OmegaConf.create(config_dict), is_animal=False)
 
-    def process_image(self, source, target):
+    def process_image(self, source, target, **kwargs):
+        self.pipeline.update_cfg(kwargs)
         source_np = tensor_to_cv2(source)
         target_np = tensor_to_cv2(target)
         processed_image = self.pipeline.animate_image(source_np, target_np)
