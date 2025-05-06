@@ -40,9 +40,32 @@ class FasterLivePortrait:
     def __init__(self):
         config_dict = get_live_portrait_config()
         self.pipeline = FasterLivePortraitPipeline(cfg=OmegaConf.create(config_dict), is_animal=False)
+        self._last_cfg_inputs = {}
+        self._cfg_keys = [
+            "flag_normalize_lip",
+            "flag_source_video_eye_retargeting",
+            "flag_video_editing_head_rotation",
+            "flag_eye_retargeting",
+            "flag_lip_retargeting",
+            "flag_stitching",
+            "flag_pasteback",
+            "flag_do_crop",
+            "flag_do_rot",
+            "lip_normalize_threshold",
+            "driving_multiplier",
+            "animation_region",
+            "cfg_mode",
+            "cfg_scale",
+            "source_max_dim",
+            "source_division"
+        ]
 
     def process_image(self, source, target, **kwargs):
-        self.pipeline.update_cfg(kwargs)
+        for k in self._cfg_keys:
+            new_val = kwargs[k]
+            if self._last_cfg_inputs.get(k) != new_val:
+                self.pipeline.set_cfg_param(k, new_val)
+                self._last_cfg_inputs[k] = new_val
         source_np = tensor_to_cv2(source)
         target_np = tensor_to_cv2(target)
         processed_image = self.pipeline.animate_image(source_np, target_np)
