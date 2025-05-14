@@ -1,11 +1,10 @@
-from faster_live_portrait import FasterLivePortraitPipeline
 from omegaconf import OmegaConf
 from .config import get_live_portrait_config
 import numpy as np
 import torch
 import cv2
 
-class FasterLivePortrait:
+class FasterLivePortraitFastLip:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -38,6 +37,8 @@ class FasterLivePortrait:
     FUNCTION = "process_image"
     CATEGORY = "FasterLivePortrait"
     def __init__(self):
+        from faster_live_portrait import FasterLivePortraitPipeline
+
         config_dict = get_live_portrait_config()
         self.pipeline = FasterLivePortraitPipeline(cfg=OmegaConf.create(config_dict), is_animal=False)
 
@@ -71,9 +72,79 @@ def tensor_to_cv2(tensor):
         arr = (arr * 255).clip(0, 255).astype(np.uint8)
     return arr
 
+class FasterLivePortraitStandard:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "source": ("IMAGE",),
+                "target": ("IMAGE",),
+            },
+            "optional": {
+                "flag_normalize_lip": ("BOOLEAN", {"default": False}),
+                "flag_source_video_eye_retargeting": ("BOOLEAN", {"default": True}),
+                "flag_video_editing_head_rotation": ("BOOLEAN", {"default": False}),
+                "flag_eye_retargeting": ("BOOLEAN", {"default": False}),
+                "flag_lip_retargeting": ("BOOLEAN", {"default": True}),
+                "flag_stitching": ("BOOLEAN", {"default": True}),
+                "flag_pasteback": ("BOOLEAN", {"default": True}),
+                "flag_do_crop": ("BOOLEAN", {"default": True}),
+                "flag_do_rot": ("BOOLEAN", {"default": True}),
+                "lip_normalize_threshold": ("FLOAT", {"default": 0.1, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "driving_multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.1}),
+                "animation_region": (["lip", "full"], {"default": "lip"}), # currently only works for lip
+                "cfg_mode": (["incremental", "reference"], {"default": "incremental"}),
+                "cfg_scale": ("FLOAT", {"default": 1.2, "min": 0.0, "max": 10.0, "step": 0.1}),
+                "source_max_dim": ("INT", {"default": 1280, "min": 64, "step": 8}),
+                "source_division": ("INT", {"default": 2, "min": 1, "max": 8, "step": 1})
+            },
+        }
+
+    RETURN_NAMES = ("PROCESSED_IMAGE",)
+    RETURN_TYPES = ("IMAGE",)
+    FUNCTION = "process_image"
+    CATEGORY = "FasterLivePortrait"
+    def __init__(self):
+        from faster_live_portrait_std import FasterLivePortraitPipeline
+        
+        config_dict = get_live_portrait_config()
+        self.pipeline = FasterLivePortraitPipeline(cfg=OmegaConf.create(config_dict), is_animal=False)
+        self.source_exists = False
+        self.first_frame = True
+    def process_image(self, source, target, **kwargs):
+        self.pipeline.update_cfg(kwargs)
+        if not self.source_exists:
+            source_np = tensor_to_cv2(source)
+            ret = self.pipeline.prepare_source(img_bgr=source_np)
+            if ret is None:
+                logging.error(f"Error: No face detected in source image {args.src_image} or other preparation error.")
+                return (torch.from_numpy(source_np.astype(np.float32) / 255.0),)
+            self.source_exists = True
+        
+        target_np = tensor_to_cv2(target)
+        _, _, processed_image, _ = self.pipeline.run(target_np, self.pipeline.src_imgs[0], self.pipeline.src_infos[0], first_frame=self.first_frame)
+        self.first_frame = False
+        processed_image = cv2.cvtColor(processed_image, cv2.COLOR_RGB2BGR)
+        tensor = torch.from_numpy(processed_image.astype(np.float32) / 255.0)
+        tensor = tensor.unsqueeze(0)
+        return (tensor,)
+    
+def tensor_to_cv2(tensor):
+    arr = tensor.detach().cpu().numpy()
+    if arr.ndim == 4 and arr.shape[0] == 1:
+        arr = arr[0]
+
+    arr = cv2.resize(arr, (512, 512), interpolation=cv2.INTER_LINEAR)
+    
+    if arr.dtype in [np.float32, np.float64]:
+        arr = (arr * 255).clip(0, 255).astype(np.uint8)
+    return arr
+
 NODE_CLASS_MAPPINGS = {
-    "FasterLivePortrait": FasterLivePortrait,
+    "FasterLivePortraitFastLip": FasterLivePortraitFastLip,
+    "FasterLivePortraitStandard": FasterLivePortraitStandard,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "FasterLivePortrait": "FasterLivePortrait",
+    "FasterLivePortraitFastLip": "FasterLivePortraitFastLip",
+    "FasterLivePortraitStandard": "FasterLivePortraitStandard",
 }
