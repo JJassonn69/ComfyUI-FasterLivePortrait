@@ -112,7 +112,7 @@ class FasterLivePortraitStandard:
                 "flag_do_rot": ("BOOLEAN", {"default": True}),
                 "lip_normalize_threshold": ("FLOAT", {"default": 0.1, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "driving_multiplier": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.1}),
-                "animation_region": (["lip", "all"], {"default": "all"}),
+                "animation_region": (["exp", "pose", "lip", "eyes", "all"], {"default": "all"}),
                 "cfg_mode": (["incremental", "reference"], {"default": "incremental"}),
                 "cfg_scale": ("FLOAT", {"default": 1.2, "min": 0.0, "max": 10.0, "step": 0.1}),
                 "source_max_dim": ("INT", {"default": 1280, "min": 64, "step": 8}),
