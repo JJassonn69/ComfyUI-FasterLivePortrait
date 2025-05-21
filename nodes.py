@@ -20,7 +20,6 @@ def load_image(image_source):
         logging.info(f"Loading image from local path: {image_source}")
         img = Image.open(image_source)
     numpy_rgb = np.array(img)
-    source_np = cv2.cvtColor(numpy_rgb, cv2.COLOR_RGB2BGR)
     source_np = cv2.resize(source_np, (512, 512), interpolation=cv2.INTER_LINEAR)
     return source_np
 
@@ -143,11 +142,12 @@ class FasterLivePortraitStandard:
             try:
                 logging.info(f"Source URL changed or not yet prepared. Loading from: {source_url}")
                 source_np = load_image(source_url)
+                source_np_bgr = cv2.cvtColor(numpy_rgb, cv2.COLOR_RGB2BGR)
             except Exception as e:
                 logging.error(f"Error loading or processing source image from URL '{source_url}': {e}")
                 return (target,)
 
-            ret = self.pipeline.prepare_source(img_bgr=source_np)
+            ret = self.pipeline.prepare_source(img_bgr=source_np_bgr)
             if ret is None:
                 logging.error(f"Failed to prepare source: No face detected in source image from '{source_url}' or other preparation error.")
                 return (target,)
@@ -158,15 +158,19 @@ class FasterLivePortraitStandard:
         target_cv2_rgb_resized = tensor_to_cv2(target)
         target_np_for_pipeline = cv2.cvtColor(target_cv2_rgb_resized, cv2.COLOR_RGB2BGR)
              
-        _, _, processed_image_pipeline, _ = self.pipeline.run(
+        _, _, processed_image, _ = self.pipeline.run(
             target_np_for_pipeline,
             self.pipeline.src_imgs[0], 
             self.pipeline.src_infos[0], 
             first_frame=self.first_frame
         )
+        if processed_image is None:
+            processed_image = source_np
+            logging.info("Warning: Animation failed for frame, using source image instead.")
+        
         self.first_frame = False
 
-        output_tensor = torch.from_numpy(processed_image_pipeline.astype(np.float32) / 255.0)
+        output_tensor = torch.from_numpy(processed_image.astype(np.float32) / 255.0)
         output_tensor = output_tensor.unsqueeze(0)
         return (output_tensor,)
     
