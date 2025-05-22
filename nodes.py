@@ -130,6 +130,7 @@ class FasterLivePortraitStandard:
         self.pipeline = FasterLivePortraitPipeline(cfg=OmegaConf.create(config_dict), is_animal=False)
         self.first_frame = True
         self.previous_source_url = None
+        self.source_np = None
 
     def process_image(self, source_url, target, **kwargs):
         self.pipeline.update_cfg(kwargs)
@@ -141,8 +142,8 @@ class FasterLivePortraitStandard:
         if self.previous_source_url != source_url:
             try:
                 logging.info(f"Source URL changed or not yet prepared. Loading from: {source_url}")
-                source_np = load_image(source_url)
-                source_np_bgr = cv2.cvtColor(numpy_rgb, cv2.COLOR_RGB2BGR)
+                self.source_np = load_image(source_url)
+                source_np_bgr = cv2.cvtColor(self.source_np, cv2.COLOR_RGB2BGR)
             except Exception as e:
                 logging.error(f"Error loading or processing source image from URL '{source_url}': {e}")
                 return (target,)
@@ -165,7 +166,7 @@ class FasterLivePortraitStandard:
             first_frame=self.first_frame
         )
         if processed_image is None:
-            processed_image = source_np
+            processed_image = self.source_np
             logging.info("Warning: Animation failed for frame, using source image instead.")
         
         self.first_frame = False
