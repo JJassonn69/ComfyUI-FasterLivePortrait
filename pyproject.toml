@@ -9,7 +9,7 @@ version = "0.0.1"
 license = { file = "LICENSE" }
 dependencies = [
     "faster-live-portrait @ git+https://github.com/varshith15/FasterLivePortrait@c5bfb24f5ea40ac382dcedfaea22d331b59efe0b",
-    "faster-live-portrait-std @ git+https://github.com/varshith15/FasterLivePortrait@a7c99bacddaa0a3cd223945bcf9e8ecfc0621f8c",
+    "faster-live-portrait-std @ git+https://github.com/varshith15/FasterLivePortrait@2e279bef92f6467d48656b105b51747844e7701e",
 ]
 
 [project.optional-dependencies]
