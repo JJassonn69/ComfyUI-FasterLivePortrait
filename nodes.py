@@ -20,7 +20,7 @@ def load_image(image_source):
         logging.info(f"Loading image from local path: {image_source}")
         img = Image.open(image_source)
     numpy_rgb = np.array(img)
-    source_np = cv2.resize(source_np, (512, 512), interpolation=cv2.INTER_LINEAR)
+    source_np = cv2.resize(numpy_rgb, (512, 512), interpolation=cv2.INTER_LINEAR)
     return source_np
 
 class FasterLivePortraitFastLip:
