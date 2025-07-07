@@ -1,0 +1,46 @@
+{
+  "2": {
+    "inputs": {
+      "source_url": "https://breakthrough.neliti.com/wp-content/uploads/2022/07/final5d2-980x1024.jpg",
+      "flag_normalize_lip": false,
+      "flag_source_video_eye_retargeting": true,
+      "flag_video_editing_head_rotation": false,
+      "flag_eye_retargeting": false,
+      "flag_lip_retargeting": true,
+      "flag_stitching": true,
+      "flag_pasteback": true,
+      "flag_do_crop": true,
+      "flag_do_rot": true,
+      "lip_normalize_threshold": 0.10000000000000002,
+      "driving_multiplier": 1,
+      "animation_region": "all",
+      "cfg_mode": "incremental",
+      "cfg_scale": 1.2000000000000002,
+      "source_max_dim": 1280,
+      "source_division": 2,
+      "target": ["3", 0]
+    },
+    "class_type": "FasterLivePortraitStandard",
+    "_meta": {
+      "title": "FasterLivePortraitStandard"
+    }
+  },
+  "3": {
+    "inputs": {
+      "image": "d9.jpg"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "4": {
+    "inputs": {
+      "images": ["2", 0]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  }
+}
